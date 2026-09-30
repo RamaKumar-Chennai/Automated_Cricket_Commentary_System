@@ -258,4 +258,4 @@ with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)
                     rag_output = gr.Textbox(label="Q&A Agent Response")
                     rag_input.submit(fn=lambda q: f"Q&A Agent Response: (stub) Answer to '{q}'", inputs=rag_input, outputs=rag_output)
 
-demo.launch(inbrowser=True)
+demo.launch(server_name="0.0.0.0", server_port=10000)
