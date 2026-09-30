@@ -4,7 +4,7 @@ import time
 from datetime import datetime
 
 # Load match JSON
-with open(r"D:\\VS_CODE\\INTEL-AIML\\Automated_Sports_Commentary_System\\ipl_json\\335982.json", encoding="utf-8") as f:
+with open(r"match.json", encoding="utf-8") as f:
     match_data = json.load(f)
 
 info = match_data["info"]
