@@ -12,4 +12,3 @@ def send_query_to_flask(query):
     return sql
 
 
-#print(send_query_to_flask(user_query))
