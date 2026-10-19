@@ -19,7 +19,7 @@ load_dotenv()
 groq_api_key = os.getenv("GROQ_API_KEY")
 
 # --- Load match JSON ---
-with open(r"D:\\VS_CODE\\INTEL-AIML\\Automated_Sports_Commentary_System\\ipl_json\\335982.json", encoding="utf-8") as f:
+with open("match.json", encoding="utf-8") as f:
     match_data = json.load(f)
 
 info = match_data["info"]
