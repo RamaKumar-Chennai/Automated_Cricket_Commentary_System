@@ -1,1 +1,9 @@
 gradio
+langchain-groq
+pyttsx3
+python-dotenv
+soundfile
+numpy
+transformers
+torch
+
