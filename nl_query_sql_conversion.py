@@ -9,23 +9,22 @@ def gen_sql_main_fn(nl_query):
             https://colab.research.google.com/drive/1rvB5y8nbTQy2XtNJU-SB6yKnb0bEUphQ
         """
         
-        #!pip install flask
+        
         
         # --- Install dependencies ---
-        !pip install transformers sentence-transformers faiss-cpu
-        !pip install langchain
-        !pip install faiss-cpu langchain-community
+        pip install transformers sentence-transformers faiss-cpu
+        pip install langchain
+        pip install faiss-cpu langchain-community
         
-        !pip install langchain-text-splitters
+        pip install langchain-text-splitters
         
-        !pip install langchain-huggingface
+        pip install langchain-huggingface
         
-        !pip install langchain-community
+        pip install langchain-community
         
-        !pip install docx2txt
+        pip install docx2txt
         
-        #!pip install pyngrok
-        
+       
         from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
         from langchain_text_splitters import RecursiveCharacterTextSplitter
         
