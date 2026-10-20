@@ -7,5 +7,5 @@ numpy
 transformers
 torch
 psycopg2-binary
-
+langgraph
 
