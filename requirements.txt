@@ -8,4 +8,14 @@ transformers
 torch
 psycopg2-binary
 langgraph
+transformers
+sentence-transformers
+faiss-cpu
+langchain
+faiss-cpu 
+langchain-community
+langchain-text-splitters
+langchain-huggingface
+langchain-community
+docx2txt
 
