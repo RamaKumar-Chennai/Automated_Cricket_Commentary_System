@@ -4,12 +4,13 @@ from mysql.connector import Error
 
 def create_connection():
     try:
+        
         connection = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="cricket_commentary"   
-        )
+            host=os.getenv("DATABASE_HOST"),
+            user=os.getenv("DATABASE_USER"),
+            password=os.getenv("DATABASE_PASSWORD"),
+            database=os.getenv("DATABASE_NAME")
+    )
         if connection.is_connected():
             print("✅ Connected to MySQL")
             return connection
