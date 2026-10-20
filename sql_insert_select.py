@@ -1,15 +1,16 @@
-# --- SQL Logging Functions (MySQL) ---
-import mysql.connector
-from mysql.connector import Error
-
+# --- SQL Logging Functions (Postgre SQL) ---
+import os
+import psycopg2
+from psycopg2 import Error
 def create_connection():
     try:
         
-        connection = mysql.connector.connect(
-            host=os.getenv("DATABASE_HOST"),
-            user=os.getenv("DATABASE_USER"),
-            password=os.getenv("DATABASE_PASSWORD"),
-            database=os.getenv("DATABASE_NAME")
+        connection= psycopg2.connect(
+        host=os.getenv("DATABASE_HOST"),
+        port=os.getenv("DATABASE_PORT"),
+        user=os.getenv("DATABASE_USER"),
+        password=os.getenv("DATABASE_PASSWORD"),
+        dbname=os.getenv("DATABASE_NAME")
     )
         if connection.is_connected():
             print("✅ Connected to MySQL")
@@ -17,6 +18,8 @@ def create_connection():
     except Error as err:
         print(f"Error: {err}")
         return None
+
+
 
 
 def truncate_table(conn):
