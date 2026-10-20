@@ -6,7 +6,8 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 from langgraph.graph import StateGraph, START, END
 
-from flask_client import send_query_to_flask
+#from flask_client import send_query_to_flask
+from nl_query_sql_conversion import gen_sql_main_fn
 from sql_insert_select import select_sql_record
 
 
@@ -122,7 +123,7 @@ def build_classifier_app():
         print(" the user query in sgl_agent fn before sending to flask is ", user_query)
 
         # Step 1: get SQL from Flask
-        sql_query = send_query_to_flask(user_query)
+        sql_query = gen_sql_main_fn(user_query)
         print(" the sql query in sgl_agent fn after sending to flask is ", sql_query)
 
         # ✅ Clean SQL before execution
