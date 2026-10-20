@@ -6,4 +6,5 @@ soundfile
 numpy
 transformers
 torch
+soundfile
 
