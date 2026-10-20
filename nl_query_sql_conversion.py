@@ -1,5 +1,5 @@
-def run_server():
 
+def gen_sql_main_fn(nl_query):
         # -*- coding: utf-8 -*-
         """user_query_sql_final_1.ipynb
         
@@ -9,7 +9,7 @@ def run_server():
             https://colab.research.google.com/drive/1rvB5y8nbTQy2XtNJU-SB6yKnb0bEUphQ
         """
         
-        !pip install flask
+        #!pip install flask
         
         # --- Install dependencies ---
         !pip install transformers sentence-transformers faiss-cpu
@@ -24,7 +24,7 @@ def run_server():
         
         !pip install docx2txt
         
-        !pip install pyngrok
+        #!pip install pyngrok
         
         from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
         from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -264,58 +264,16 @@ def run_server():
             return sql_query.strip()
         
         
+            sql_query = generate_sql(schema, instruction, nl_query)
+            print("the gen sql query before normalize sql is ",sql_query)
+            sql_query = normalize_sql(sql_query)
+            sql_query =clean_sql(nl_query, sql_query)
+                
+                
+            print("the gen sql query is after clean is ",sql_query)
+               
+            return  sql_query
         
-        from flask import Flask, request, jsonify
-        from pyngrok import ngrok, conf
-        
-        app = Flask(__name__)
-        
-        
-        # ✅ Root route for browser check
-        @app.route("/", methods=["GET"])
-        def home():
-            return "Flask server is running. Use POST /generate_sql for SQL."
-        
-        # ✅ API route for SQL generation
-        @app.route("/generate_sql", methods=["POST"])
-        def generate_sql_route():
-            try:
-                data = request.json
-                nl_query = data.get("query", "")
-                print("the natural lang query is ",nl_query)
-        
-                # Generate SQL
-        
-                sql_query = generate_sql(schema, instruction, nl_query)
-                print("the gen sql query before normalize sql is ",sql_query)
-                sql_query = normalize_sql(sql_query)
-                sql_query =clean_sql(nl_query, sql_query)
-        
-        
-                print("the gen sql query is after clean is ",sql_query)
-                return jsonify({"sql": sql_query})
-            except Exception as e:
-                return jsonify({"error": str(e)}), 500
-        
-        
-        
-        
-        # 🔑 Set your ngrok authtoken
-        conf.get_default().auth_token = "3JYMJCCNtM9GUVXPTlnYrKJT5jt_7oggSV39dMjf6qu4BM4yp"
-        
-        
-        # ✅ Reuse existing tunnel if already running
-        tunnels = ngrok.get_tunnels()
-        if tunnels:
-            public_url = tunnels[0].public_url
-            print("Reusing existing Public URL:", public_url)
-        else:
-            public_url = ngrok.connect(5000)
-            print("New Public URL:", public_url)
-        
-        # ✅ Run Flask
-        if __name__ == "__main__":
-            app.run(port=5000)
         
         
         
