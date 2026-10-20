@@ -525,4 +525,6 @@ with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)
     # Wire your own function here later
     live_btn.click(fn=replay, inputs=None, outputs=[commentary_html, detailed, commentary_audio])
 
-demo.launch(inbrowser=True)
+
+demo.launch(server_name="0.0.0.0", server_port=10000)
+
