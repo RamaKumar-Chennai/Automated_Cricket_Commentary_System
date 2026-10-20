@@ -11,18 +11,7 @@ def gen_sql_main_fn(nl_query):
         
         
         
-        # --- Install dependencies ---
-        pip install transformers sentence-transformers faiss-cpu
-        pip install langchain
-        pip install faiss-cpu langchain-community
         
-        pip install langchain-text-splitters
-        
-        pip install langchain-huggingface
-        
-        pip install langchain-community
-        
-        pip install docx2txt
         
        
         from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
