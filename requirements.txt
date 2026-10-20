@@ -6,5 +6,6 @@ soundfile
 numpy
 transformers
 torch
+psycopg2-binary
 
 
