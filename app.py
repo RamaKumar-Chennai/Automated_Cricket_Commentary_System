@@ -279,7 +279,7 @@ footer {
 
 
 
-with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)") as demo:
+with gr.Blocks() as demo:
     with gr.Row(elem_classes="header-block"):
         gr.Image(value="stadium_image.webp", type="filepath", show_label=False, scale=0, elem_id="stadium-img")
         gr.HTML(f"""
@@ -311,5 +311,6 @@ with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)
     # Wire your own function here later
     live_btn.click(fn=replay, inputs=None, outputs=[commentary_html])
 
-demo.launch(inbrowser=True)
+# ✅ Pass css and title here
+demo.launch(server_name="0.0.0.0", server_port=10000, inbrowser=True, css=css_styles, title="Autonomous Sports Commentary (Live Replay)")
 
