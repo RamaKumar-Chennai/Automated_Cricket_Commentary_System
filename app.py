@@ -3,19 +3,18 @@ import json
 import time
 import tempfile
 from datetime import datetime
-from langchain_groq import ChatGroq
-import pyttsx3
+
 import os
 from sql_insert_select import create_connection
 from sql_insert_select import insert_delivery
 from sql_insert_select import truncate_table
 from sql_insert_select import select_sql_record
-from dotenv import load_dotenv
+
 
 from query_classifer import classify_query
 
 # --- Load environment variables ---
-load_dotenv()
+
 groq_api_key = os.getenv("GROQ_API_KEY")
 
 # --- Load match JSON ---
