@@ -1,7 +1,7 @@
 import gradio as gr
 import json
 import time
-import tempfile
+
 from datetime import datetime
 
 import os
@@ -37,61 +37,6 @@ event_name = info["event"]["name"]
 # Extract stage (Semi Final / Final / League)
 stage = info["event"].get("stage", "League")        # returns "Semi Final" or "Final" if present
 
-# --- Initialize Groq LLM ---
-
-text_commentary_llm = ChatGroq(model="openai/gpt-oss-120b", api_key=groq_api_key)
-
-# --- Commentary generator ---
-def make_prompt(ball):
-    prompt = f"""
-You are a cricket commentator in IPL Season 1, year 2008.
-Generate commentary for this ball:
-- Over: {ball["actual_delivery"]}
-- Bowler: {ball['bowler']}
-- Batter: {ball['batter']}
-- Non-striker: {ball['non_striker']}
-- Runs scored by the batter:{ball['runs_batter']}
-- Runs due to extras:{ball['runs_extras']}
-- Total Runs scored by the batter:{ball['runs_total']}
-- Extras type: {ball['extras_type']}
-- Wicket: {ball['wicket']}
-- Wicket kind: {ball['wicket_kind']}
-
--Player out: {ball['player_out']}
--Fielder: {ball['fielder']}
-
-- Current score: {ball['score_after_ball']}
-
-
-  Rules:
-- If runs = 4 or 6 → make it exciting, energetic, crowd‑pleasing.
-- If wicket = True → describe the dismissal dramatically, mention wicket kind, and impact.
-- Otherwise → keep it engaging but balanced.
-- Commentary should sound natural, like spoken broadcast.
-- Length: ~40–50 words.
-"""
-    return prompt
-
-def generate_commentary(ball):
-    prompt = make_prompt(ball)
-    response = text_commentary_llm.invoke(prompt)
-    return response.content.strip()
-
-# --- Voice synthesis with pyttsx3 ---
-
-
-
-def text_to_speech(text):
-    engine = pyttsx3.init()
-    engine.setProperty("rate", 220)
-    engine.setProperty("volume", 1.0)
-    # Fixed file path inside temp directory
-    tmpfile = os.path.join(tempfile.gettempdir(), "gradio_tts.wav")
-    # Overwrite the same file each time
-    engine.save_to_file(text, tmpfile)
-    engine.runAndWait()
-    # Return the file path so Gradio can play it
-    return tmpfile
 
 
     
@@ -253,10 +198,7 @@ def replay():
                 elif is_extra_ball:
                     block_html += f"<div style='background:#aed6f1;padding:8px;border-radius:8px;font-weight:bold;'>⚠️ {extras_detail}</div>"
 
-                # Generate commentary + audio
-                commentary_text = generate_commentary(ball_data)
-                audio_file = text_to_speech(commentary_text)
-              
+                
 
                 # ✅ Skip scorecard if innings ended
                 if wickets == 10:
@@ -357,53 +299,6 @@ css_styles = """
     font-weight:bold;
 }
 
-/* ✅ Text Commentary box with light aqua theme */
-.detailed-box {
-    background: #b2ebf2;        /* light aqua outer background */
-    border: 3px solid #4dd0e1;  /* medium teal border */
-    border-radius: 8px;
-    padding: 10px;
-}
-
-.detailed-box textarea {
-    background: #e0f7fa;        /* pale aqua inside */
-    color: #006064;             /* deep teal text */
-    font-weight: bold;
-    border: 2px solid #26c6da;  /* inner border */
-    border-radius: 6px;
-}
-
-
-/* Controls container */
-.controls-box {
-    background: #fce4ec;        /* soft pink background */
-    border: 2px solid #f48fb1;  /* pink border */
-    border-radius: 8px;
-    padding: 8px;
-}
-
-/* Text input area */
-.controls-box textarea,
-.controls-box input {
-    background: #fff0f6;        /* lighter pink inside */
-    border: 2px solid #f8bbd0;  /* subtle border */
-    border-radius: 6px;
-    color: #4a148c;             /* deep purple text */
-    font-weight: bold;
-    padding: 6px;
-}
-
-/* Focus effect */
-.controls-box textarea:focus,
-.controls-box input:focus {
-    outline: none;
-    border-color: #ce93d8;      /* lavender highlight */
-    box-shadow: 0 0 6px #ba68c8;
-}
-
-
-
-
 /* ✅ Scorecard styling: border + reduced height + centered text + smaller font */
 .scorecard {
     border: 2px solid #1976d2;
@@ -419,23 +314,7 @@ css_styles = """
 
 
 
-.voice-box {
-    background: #b2ebf2;        /* light aqua outer background */
-    border: 1px solid #4dd0e1;  /* thinner border */
-    border-radius: 4px;
-    padding: 2px;               /* minimal padding */
-    display: inline-block;      /* keeps it compact */
-}
 
-
-
-.voice-box audio {
-    width: 160px !important;    /* narrower width */
-    height: 26px !important;    /* minimum most browsers allow */
-    background: #e0f7fa;        /* pale aqua inside */
-    border: 1px solid #26c6da;  /* thinner inner border */
-    border-radius: 4px;
-}
 
 /* 🌐 Page background */
 body, .gradio-container {
@@ -450,23 +329,6 @@ footer {
 """
 
 
-import soundfile as sf
-import numpy as np
-from transformers import pipeline
-
-# Load Whisper-tiny
-asr = pipeline("automatic-speech-recognition", model="openai/whisper-tiny")
-
-def speech_to_text(audio_path):
-    if audio_path is None:
-        return "No audio recorded"
-    # Load audio manually with soundfile (no ffmpeg)
-    samples, sr = sf.read(audio_path)
-    # Whisper expects float32 numpy array
-    samples = np.array(samples, dtype=np.float32)
-    # Pass raw waveform and sample rate
-    result = asr({"array": samples, "sampling_rate": sr})
-    return result["text"]
 
 
 
@@ -497,32 +359,9 @@ with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)
 
             live_btn = gr.Button("🏏 LIVE SCORE")
 
-            detailed = gr.Textbox(label="Detailed Commentary", lines=5,elem_classes="detailed-box")
-
             
-            # ✅ Voice commentary with reduced width + height
-            commentary_audio = gr.Audio(label="🔊 Voice Commentary", type="filepath", elem_classes="voice-box")
-            
-            gr.Markdown("### ⚙️ Controls")
-            stats_input = gr.Textbox(label="Question", placeholder="Speak or type your query here",elem_classes="controls-box")
-            stats_output = gr.Textbox(label="Response",elem_classes="controls-box")
-
-
-
-            mic_input = gr.Audio(type="filepath", label="🎤 Speak")
-               
-            mic_input.change(speech_to_text, inputs=mic_input, outputs=stats_input)
-
-
-            reset_btn = gr.Button("Reset")
-    
-            # Reset → clear both textboxes
-            reset_btn.click(lambda: ("", ""), None, [stats_input, stats_output], queue=False)
-
-            stats_input.submit(fn=classify_query, inputs=stats_input, outputs=stats_output)
-
     # Wire your own function here later
-    live_btn.click(fn=replay, inputs=None, outputs=[commentary_html, detailed, commentary_audio])
+    live_btn.click(fn=replay, inputs=None, outputs=[commentary_html])
 
 
 demo.launch(server_name="0.0.0.0", server_port=10000)
