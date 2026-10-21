@@ -87,28 +87,3 @@ def select_sql_record(query):
     conn.close()
     return df
 
-# --- Example Usage ---
-if __name__ == "__main__":
-    # Example ball data
-    ball_data = {
-        "actual_delivery": "0.1",
-        "bowler": "Bowler A",
-        "batter": "Batter B",
-        "non_striker": "Player C",
-        "runs_batter": 1,
-        "runs_extras": 0,
-        "runs_total": 1,
-        "extras_type": "",
-        "boundary_4": 0,
-        "boundary_6": 0,
-        "wicket": 0,
-        "wicket_kind": None,
-        "player_out": None,
-        "fielder": None,
-        "score_after_ball": 1
-    }
-
-    insert_delivery("Team X", 2026, "Group Stage", 1, 0, 1, 1, ball_data)
-
-    df = select_sql_record("SELECT * FROM deliveries LIMIT 5;")
-    print(df)
