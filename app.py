@@ -42,7 +42,7 @@ stage = info["event"].get("stage", "League")        # returns "Semi Final" or "F
     
 #conn=create_connection()
 #if conn:
- truncate_table(conn)
+# truncate_table(conn)
 
 # --- Replay function ---
 
