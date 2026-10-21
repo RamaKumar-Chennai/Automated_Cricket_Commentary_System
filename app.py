@@ -212,11 +212,11 @@ def replay():
 
                 # Event-based delay
                 if dismissal_msg:
-                    delay = 16
+                    delay = 6
                 elif boundary_4 or boundary_6:
-                    delay = 16
+                    delay = 6
                 else:
-                    delay = 16
+                    delay = 6
                 time.sleep(delay)
 
 
