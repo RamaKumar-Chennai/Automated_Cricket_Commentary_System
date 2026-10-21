@@ -11,7 +11,7 @@ from sql_insert_select import truncate_table
 from sql_insert_select import select_sql_record
 
 
-from query_classifer import classify_query
+
 
 # --- Load environment variables ---
 
