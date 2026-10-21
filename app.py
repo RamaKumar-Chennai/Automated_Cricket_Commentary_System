@@ -12,11 +12,6 @@ from sql_insert_select import select_sql_record
 
 
 
-
-# --- Load environment variables ---
-
-
-
 # --- Load match JSON ---
 with open("match.json", encoding="utf-8") as f:
     match_data = json.load(f)
@@ -40,9 +35,9 @@ stage = info["event"].get("stage", "League")        # returns "Semi Final" or "F
 
 
     
-#conn=create_connection()
-#if conn:
-# truncate_table(conn)
+conn=create_connection()
+if conn:
+  truncate_table(conn)
 
 # --- Replay function ---
 
@@ -207,16 +202,16 @@ def replay():
                 # Yield scorecard 
                 yield block_html
 
-                #conn = create_connection()
-                #insert_delivery(conn, team, year, stage, match_number, innings_index, over_part+1, legal_ball_count, ball_data)
+                conn = create_connection()
+                insert_delivery(conn, team, year, stage, match_number, innings_index, over_part+1, legal_ball_count, ball_data)
 
                 # Event-based delay
                 if dismissal_msg:
-                    delay = 6
+                    delay = 0.1
                 elif boundary_4 or boundary_6:
-                    delay = 6
+                    delay = 0.1
                 else:
-                    delay = 6
+                    delay = 0.1
                 time.sleep(delay)
 
 
