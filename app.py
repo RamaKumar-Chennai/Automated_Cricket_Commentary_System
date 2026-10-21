@@ -205,7 +205,7 @@ def replay():
                     continue  
 
                 # Yield scorecard + commentary + audio
-                yield block_html, commentary_text, audio_file
+                yield block_html
 
                 conn = create_connection()
                 insert_delivery(conn, team, year, stage, match_number, innings_index, over_part+1, legal_ball_count, ball_data)
