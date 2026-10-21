@@ -102,6 +102,50 @@ def replay():
                 time.sleep(0.1)
 
 
+# --- Players toggle ---
+def toggle_players(current_html):
+    if current_html.strip() == "":
+        team1_players = "<ul>" + "".join([f"<li>{p}</li>" for p in info["players"][teams[0]]]) + "</ul>"
+        team2_players = "<ul>" + "".join([f"<li>{p}</li>" for p in info["players"][teams[1]]]) + "</ul>"
+        return f"""
+        <div style='background:#fff3e0;padding:10px;border-radius:8px; max-height:300px; overflow-y:auto;'>
+            <h4>👥 Team Squads</h4>
+            <b>{teams[0]}:</b>{team1_players}
+            <b>{teams[1]}:</b>{team2_players}
+        </div>
+        """
+    else:
+        return ""
+
+# --- Sidebar details ---
+def sidebar_details():
+    venue = info.get("venue", "")
+    city = info.get("city", "")
+    toss_winner = info["toss"]["winner"]
+    toss_decision = info["toss"]["decision"]
+    match_type = info.get("match_type", "")
+    overs = info.get("overs", "")
+    balls_per_over = info.get("balls_per_over", "")
+    officials = info.get("officials", {})
+    umpires = ", ".join(officials.get("umpires", []))
+    tv_umpires = ", ".join(officials.get("tv_umpires", []))
+    reserve_umpires = ", ".join(officials.get("reserve_umpires", []))
+    referee = ", ".join(officials.get("match_referees", []))
+
+    return f"""
+    <div class='match-details'>
+        📅 Date: {match_date}<br>
+        🏟️ Venue: {venue}, {city}<br>
+        🎲 Toss: {toss_winner} chose to {toss_decision}<br>
+        📖 Match Type: {match_type}<br>
+        ⏱️ Overs: {overs}<br>
+        🎯 Balls per Over: {balls_per_over}<br>
+        👨‍⚖️ Umpires: {umpires}<br>
+        📺 TV Umpires: {tv_umpires}<br>
+        🧑‍⚖️ Reserve Umpires: {reserve_umpires}<br>
+        📝 Referee: {referee}
+    </div>
+    """
 
 
 
