@@ -1,2 +1,4 @@
 gradio
-mysql-connector-python
+psycopg2-binary
+pandas
+
