@@ -15,7 +15,7 @@ from sql_insert_select import select_sql_record
 
 # --- Load environment variables ---
 
-groq_api_key = os.getenv("GROQ_API_KEY")
+
 
 # --- Load match JSON ---
 with open("match.json", encoding="utf-8") as f:
@@ -40,8 +40,8 @@ stage = info["event"].get("stage", "League")        # returns "Semi Final" or "F
 
 
     
-conn=create_connection()
-if conn:
+#conn=create_connection()
+#if conn:
  truncate_table(conn)
 
 # --- Replay function ---
@@ -204,11 +204,11 @@ def replay():
                 if wickets == 10:
                     continue  
 
-                # Yield scorecard + commentary + audio
+                # Yield scorecard 
                 yield block_html
 
-                conn = create_connection()
-                insert_delivery(conn, team, year, stage, match_number, innings_index, over_part+1, legal_ball_count, ball_data)
+                #conn = create_connection()
+                #insert_delivery(conn, team, year, stage, match_number, innings_index, over_part+1, legal_ball_count, ball_data)
 
                 # Event-based delay
                 if dismissal_msg:
