@@ -357,6 +357,9 @@ with gr.Blocks(css=css_styles, title="Autonomous Sports Commentary (Live Replay)
             )
 
             live_btn = gr.Button("🏏 LIVE SCORE")
+            reset_btn = gr.Button("🗑️ Reset Deliveries Table")
+    reset_btn.click(fn=truncate_table, inputs=None, outputs=None)
+
 
             
     # Wire your own function here later
