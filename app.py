@@ -32,12 +32,16 @@ event_name = info["event"]["name"]
 # Extract stage (Semi Final / Final / League)
 stage = info["event"].get("stage", "League")        # returns "Semi Final" or "Final" if present
 
+   
+def safe_truncate():
+    try:
+        conn = create_connection()
+        if conn:
+            truncate_table()
+    except Exception as e:
+        print("⚠️ DB not ready:", e)
 
 
-    
-conn=create_connection()
-if conn:
-  truncate_table(conn)
 
 # --- Replay function ---
 
