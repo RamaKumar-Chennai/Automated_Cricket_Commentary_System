@@ -1,4 +1,3 @@
-
 import gradio as gr
 import json
 import time
@@ -101,7 +100,6 @@ def replay():
                 yield block_html
                 time.sleep(0.1)
 
-
 # --- Players toggle ---
 def toggle_players(current_html):
     if current_html.strip() == "":
@@ -147,11 +145,7 @@ def sidebar_details():
     </div>
     """
 
-
-
-
 # --- CSS ---
-
 css_styles = """
 .header-block {
     background: linear-gradient(90deg, #ff9a9e, #fad0c4);
@@ -183,55 +177,6 @@ css_styles = """
     color:#4a148c;
     font-weight:bold;
 }
-
-/* ✅ Text Commentary box with light aqua theme */
-.detailed-box {
-    background: #b2ebf2;        /* light aqua outer background */
-    border: 3px solid #4dd0e1;  /* medium teal border */
-    border-radius: 8px;
-    padding: 10px;
-}
-
-.detailed-box textarea {
-    background: #e0f7fa;        /* pale aqua inside */
-    color: #006064;             /* deep teal text */
-    font-weight: bold;
-    border: 2px solid #26c6da;  /* inner border */
-    border-radius: 6px;
-}
-
-
-/* Controls container */
-.controls-box {
-    background: #fce4ec;        /* soft pink background */
-    border: 2px solid #f48fb1;  /* pink border */
-    border-radius: 8px;
-    padding: 8px;
-}
-
-/* Text input area */
-.controls-box textarea,
-.controls-box input {
-    background: #fff0f6;        /* lighter pink inside */
-    border: 2px solid #f8bbd0;  /* subtle border */
-    border-radius: 6px;
-    color: #4a148c;             /* deep purple text */
-    font-weight: bold;
-    padding: 6px;
-}
-
-/* Focus effect */
-.controls-box textarea:focus,
-.controls-box input:focus {
-    outline: none;
-    border-color: #ce93d8;      /* lavender highlight */
-    box-shadow: 0 0 6px #ba68c8;
-}
-
-
-
-
-/* ✅ Scorecard styling: border + reduced height + centered text + smaller font */
 .scorecard {
     border: 2px solid #1976d2;
     border-radius:8px;
@@ -240,45 +185,18 @@ css_styles = """
     color:#0d47a1;
     text-align:center;
     font-weight:bold;
-    font-size:14px;   /* reduced font size */
-    min-height:80px;  /* reduced height */
+    font-size:14px;
+    min-height:80px;
 }
-
-
-
-.voice-box {
-    background: #b2ebf2;        /* light aqua outer background */
-    border: 1px solid #4dd0e1;  /* thinner border */
-    border-radius: 4px;
-    padding: 2px;               /* minimal padding */
-    display: inline-block;      /* keeps it compact */
-}
-
-
-
-.voice-box audio {
-    width: 160px !important;    /* narrower width */
-    height: 26px !important;    /* minimum most browsers allow */
-    background: #e0f7fa;        /* pale aqua inside */
-    border: 1px solid #26c6da;  /* thinner inner border */
-    border-radius: 4px;
-}
-
-/* 🌐 Page background */
 body, .gradio-container {
-    background: linear-gradient(135deg, #fce4ec, #e0f7fa);  /* soft pink → aqua gradient */
+    background: linear-gradient(135deg, #fce4ec, #e0f7fa);
 }
-
-/* 🚫 Hide Gradio footer */
 footer {
     display: none !important;
 }
-
 """
 
-
-
-
+# --- Gradio UI ---
 with gr.Blocks() as demo:
     with gr.Row(elem_classes="header-block"):
         gr.Image(value="stadium_image.webp", type="filepath", show_label=False, scale=0, elem_id="stadium-img")
@@ -297,19 +215,16 @@ with gr.Blocks() as demo:
             toggle_players_btn.click(fn=toggle_players, inputs=players_html, outputs=players_html)
 
         with gr.Column(scale=3):
-            # ✅ Default centered SCORE CARD message
             commentary_html = gr.HTML(
                 value="<div>SCORE CARD:<br>Click LIVE SCORE to update...</div>",
                 label="Ball-by-Ball Replay",
                 elem_classes="scorecard"
             )
-
             live_btn = gr.Button("🏏 LIVE SCORE")
 
-            
-
-    # Wire your own function here later
     live_btn.click(fn=replay, inputs=None, outputs=[commentary_html])
+
+# ✅ Launch
 
 # ✅ Pass css and title here
 demo.launch(server_name="0.0.0.0", server_port=10000, inbrowser=True, css=css_styles, title="Autonomous Sports Commentary (Live Replay)")
